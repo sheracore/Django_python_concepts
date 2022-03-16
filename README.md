@@ -55,3 +55,45 @@ debug_task.si(1).apply_async()
 from celery import group
 group(debug_task.si(1,2), debug_task.si(2,4)).delay()
 ```
+## If you want to bind a task after running another task in other work should run first task so second task can run, use chain or pip
+```
+from celery import chain
+chain(debug_task.si(1), debug_task.si(2)).apply_async()
+chain(debug_task.si(1), debug_task.si(2)).delay()
+
+(debug_task.si(1, 2) | debug_task.si(3)).apply_async()
+(debug_task.si(1, 2) | debug_task.si(3)).delay()
+```
+### And if you want to use result of first task to second task use "s" 
+```
+@task()
+def add(a, b):
+    time.sleep(5) # simulate long time processing
+    return a + b
+    
+# import chain from celery import chain
+# the result of the first add job will be 
+# the first argument of the second add job
+ret = chain(add.s(1, 2), add.s(3)).apply_async()
+
+# another way to express a chain using pipes
+ret2 = (add.s(1, 2) | add.s(3)).apply_async()
+```
+
+## In our app samples
+```
+chain(debug_task.si(1),debug_task.si(2)).delay()
+(debug_task.si(2,3) | debug_task.si(3,4)).delay()
+a = (debug_task.s(2,3) | debug_task.s(4)).delay()
+debug_task.s(2,3).delay()
+a = (debug_task.s(2,3) | debug_task.s(4) | debug_task.s(5)).delay()
+a.parent.parent.id
+group(debug_task.si(1), debug_task.si(2)).delay()
+a = group(debug_task.si(1,2), debug_task.si(2,4)).delay()
+a = (group(debug_task.si(1,2), debug_task.si(2,4))|group(debug_task.si(1,2), debug_task.si(2,4))).delay()
+a.parent.children[0].state
+```
+
+
+
+
