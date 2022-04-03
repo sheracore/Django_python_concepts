@@ -27,7 +27,7 @@ redis-cli
 ```
 celery -A proj worker -l info
 ```
-### Each cpu core has two thread so each worker on any cpu can (subscribe)consumer two concurency
+### Each cpu core has two thread so each worker on any cpu can (subscribe)consume two concurency task
 ### So if you run a worker on i7 cpu worker can get 16 published message or task concurency
 ### And if you want worker just consume on one(two, three, ..)thread you can use
 ```
@@ -55,7 +55,7 @@ debug_task.si(1).apply_async()
 from celery import group
 group(debug_task.si(1,2), debug_task.si(2,4)).delay()
 ```
-## If you want to bind a task after running another task in other work should run first task so second task can run, use chain or pip
+## If you want to bind a task after running another task in other word should run first task so second task can run, use chain or pip
 ```
 from celery import chain
 chain(debug_task.si(1), debug_task.si(2)).apply_async()
