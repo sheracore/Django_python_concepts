@@ -94,6 +94,20 @@ a = (group(debug_task.si(1,2), debug_task.si(2,4))|group(debug_task.si(1,2), deb
 a.parent.children[0].state
 ```
 
+## Work with redis in python celery
+```
+app = Celery('viruspod')
+""" 'viruspod' is name of queue """
+i = app.control.inspect()
+i.registerd() # All methos that are defined as task
+i.active() # active tasks mention tasks that have cpu core and in progress
+i.reserved() # that tasks os ready to run
+```
+
+## There is a problem, we cant see all tasks in redis queue by inspect so we should use python redis
+```
+
+```
 
 
 
