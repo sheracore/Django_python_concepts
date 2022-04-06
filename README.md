@@ -119,6 +119,8 @@ r.lrange(quere, 0, llen(queue))
 celery -A proj worker --prefetch-multiplier=1 -l info -Q scan-sessions
 tasks.append(debug_task.si(i).set(queue='scan-sessions'))
 ```
+## Some golden points.
+### 1) If you run some group continuous that are run continuous and that are arranged but in group that tasks run together(parallel) based on the number of cup cores.
 
 
 
