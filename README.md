@@ -106,8 +106,21 @@ i.reserved() # that tasks os ready to run
 
 ## There is a problem, we cant see all tasks in redis queue by inspect so we should use python redis
 ```
-
+import redis
+r = redis.Redis()
+r.lrange(queue, min, max) # for lists
+r.llen queue # length of list
+r.lrange(quere, 0, llen(queue))
 ```
+
+## In worker command line and delay a task we can define queue instead of default queue
+## Also if we don't want having reserved tasks we can use prefetch-multiplier switch in worker command line
+```
+celery -A proj worker --prefetch-multiplier=1 -l info -Q scan-sessions
+tasks.append(debug_task.si(i).set(queue='scan-sessions'))
+```
+
+
 
 
 
