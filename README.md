@@ -122,6 +122,12 @@ tasks.append(debug_task.si(i).set(queue='scan-sessions'))
 ## Some golden points.
 #### 1) If you run some group continuous that are run continuous and that are arranged but in group that tasks run together(parallel) based on the number of cup cores.
 
+#### 2) To disable reserved tasks in queue you should first add --prefetch-multiplier=1 to worker command line and add following envs in settings:
+```
+celery -A proj worker --prefetch-multiplier=1 -l info -Q scan-sessions --concurrency=1
+CELERYD_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_TRACK_STARTED = True
+```
 
 
 
