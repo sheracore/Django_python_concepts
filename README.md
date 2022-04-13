@@ -129,6 +129,22 @@ CELERYD_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_TRACK_STARTED = True
 ```
 
+### To get task objects inside of outer object shoudl using children method
+```
+@shared_task
+def task1():
+    task2.delay()
+
+a task1.delay()
+a.children
+
+or
+
+sig = task1.si | task2.si
+sig.apply_aysn()
+
+sig.id is for task2 and sig.parent.id is for task1
+```
 
 
 
